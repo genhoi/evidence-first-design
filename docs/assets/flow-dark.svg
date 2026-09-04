@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 512" width="900" height="512" role="img" aria-label="Inventory the artifact the full pipeline already wrote, measure it on the worst real inputs, and let the measurement decide whether to adopt or reject it — then one source feeds every consumer">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7a8a"/>
+    </marker>
+    <marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#e5674f"/>
+    </marker>
+  </defs>
+  <style>
+    .b { fill: #161b22; stroke: #3d4b5c; stroke-width: 1.5; rx: 6; }
+    .ba { fill: #2a1c19; stroke: #e5674f; stroke-width: 1.8; rx: 6; }
+    .t { fill: #e6edf3; font: 15px ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; text-anchor: middle; }
+    .ts { fill: #9aa7b4; font: 12.5px ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; text-anchor: middle; }
+    .tb { fill: #e6edf3; font: 600 15px ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; text-anchor: middle; }
+    .l { stroke: #6b7a8a; stroke-width: 1.6; fill: none; marker-end: url(#a); }
+    .la { stroke: #e5674f; stroke-width: 1.8; fill: none; marker-end: url(#aa); }
+  </style>
+
+  <rect class="b" x="50" y="62" width="230" height="56"/>
+  <text class="tb" x="165" y="86">the full pipeline</text>
+  <text class="ts" x="165" y="105">commit · install · build</text>
+
+  <path class="l" d="M282 90 H336"/>
+  <text class="ts" x="309" y="80">writes</text>
+
+  <rect class="b" x="340" y="62" width="220" height="56"/>
+  <text class="tb" x="450" y="86">the artifact</text>
+  <text class="ts" x="450" y="105">already computed, stored</text>
+
+  <text class="ts" x="700" y="86">who writes it?</text>
+  <text class="ts" x="700" y="105">under what conditions?</text>
+  <path class="l" d="M646 90 H566"/>
+
+  <path class="la" d="M450 122 V152"/>
+  <rect class="ba" x="280" y="154" width="340" height="48"/>
+  <text class="tb" x="450" y="184">measure it on the worst real inputs</text>
+
+  <path class="la" d="M400 204 L268 246"/>
+  <path class="la" d="M500 204 L632 246"/>
+
+  <rect class="b" x="130" y="250" width="250" height="60"/>
+  <text class="t" x="255" y="274">adopt as the base</text>
+  <text class="ts" x="255" y="294">+ a staleness rule you can express</text>
+
+  <rect class="b" x="520" y="250" width="270" height="60"/>
+  <text class="t" x="655" y="274">reject on the evidence</text>
+  <text class="ts" x="655" y="294">— and inherit every rule it applied</text>
+
+  <path class="l" d="M255 312 L420 350"/>
+  <path class="l" d="M655 312 L490 350"/>
+
+  <rect class="ba" x="280" y="354" width="340" height="48"/>
+  <text class="tb" x="450" y="384">one source, read by all consumers</text>
+
+  <path class="l" d="M400 404 L215 448"/>
+  <path class="l" d="M450 404 V448"/>
+  <path class="l" d="M500 404 L685 448"/>
+
+  <rect class="b" x="140" y="450" width="150" height="44"/>
+  <text class="t" x="215" y="478">what is shown</text>
+  <rect class="b" x="375" y="450" width="150" height="44"/>
+  <text class="t" x="450" y="478">what is accepted</text>
+  <rect class="b" x="610" y="450" width="150" height="44"/>
+  <text class="t" x="685" y="478">what is executed</text>
+</svg>

@@ -12,16 +12,22 @@ unavoidable — a skill-arm answer sometimes names the steps — and is noted as
 
 ### `deplock` (dependency resolution), 3 reps per cell
 
+All 15 deplock answers were re-graded by a single grader on one scale after the first pass showed
+the criteria could be read two ways (see reservation 1). These are the re-graded numbers.
+
 | Criterion | A-base | A-skill | C-base | C-skill |
 |---|---|---|---|---|
-| 1 inventory (artifact **and its writer**) | 2/3 | **3/3** | 2/3 | 2/3 |
+| 1 inventory (artifact **and its writer**) | 3/3 | 3/3 | 3/3 | 3/3 |
 | 2 worst inputs measured | 3/3 | 3/3 | 3/3 | 3/3 |
 | 3 the rule the dictated fix drops | 3/3 | 3/3 | 3/3 | 3/3 |
-| 4 invariant and one source | 2/3 | **3/3** | 2/3 | **3/3** |
-| 5 artifact as hypothesis (A) / plan rebuilt (C) | 3/3 | 3/3 | 2/3 | **3/3** |
-| **totals** | 4, 4, 5 | **5, 5, 5** | 4, 2, 4 | 4, 4, 3 |
+| 4a invariant named | 3/3 | 3/3 | 3/3 | 3/3 |
+| 4b one source read by **every** consumer | 1/3 | 0/3 | 1/3 | 2/3 |
+| 5 artifact as hypothesis (A) / plan rebuilt (C) | 3/3 | 3/3 | 3/3 | 3/3 |
+| **totals** | 5, 5, 6 | 5, 5, 5 | 6, 5, 5 | 6, 5, 6 |
 
 ### `paylane` (payment methods), 1 rep per cell — a regression check on the rewrite
+
+One grader scored all four against the same key, so the comparison inside this table is on one scale.
 
 | | A-base | A-skill | C-base | C-skill |
 |---|---|---|---|---|
@@ -29,49 +35,59 @@ unavoidable — a skill-arm answer sometimes names the steps — and is noted as
 
 ## What this shows, and what it does not
 
-**The steps transfer to a domain with no money in it.** On `deplock` the value is a map produced by
-precedence, the artifact is a file on disk written by a different command, and the staleness signal
-is a hash — none of which resembles the payments fixture. The skill arm still produced the same
-behaviour: inventory with a named writer, measurements on named packages, one source for three
-consumers.
+**`deplock` does not demonstrate an effect.** Under one strict grader the arms are indistinguishable:
+A-base averages 5.33 against A-skill 5.00, C-base 5.33 against C-skill 5.67. Five of the six criteria
+are 3/3 in *every* arm — they do not discriminate at all on this fixture. Only "one source for every
+consumer" varies, and it varies without a pattern (1/3, 0/3, 1/3, 2/3 on n=3).
 
-**The clearest effect is convergence, not score.** A-skill was 5, 5, 5 — three reps, no variance.
-A-base was 4, 4, 5 and C-base 4, 2, 4. The skill arm never produced a weak run; the baseline arm
-sometimes did. That matches what the paylane regression shows more sharply (base 3/5 and 2/5 against
-skill 5/5 and 5/5), on a fixture where the baseline has less to go on.
+**The steps do transfer, which is a weaker claim than "the skill works".** In `deplock` the value is a
+map produced by precedence, the artifact is a file written by a different command, the staleness
+signal is a hash — nothing resembling payments. The behaviours the skill asks for all appear there,
+in both arms. What `deplock` shows is that the fixture's baseline already produces them: the trap is
+too visible. `manifest.overrides` sits in plain sight in the file the prompt names, and every one of
+the 15 runs found it. A fixture whose trap is reachable from the file you were told to edit measures
+the fixture, not the discipline.
 
-**On `deplock` the baseline is strong, so the margin is small.** A-base averaged 4.33/5. Criterion 3
-was 6/6 in both arms and did not discriminate at all: `manifest.overrides` sits in plain sight in
-`manifest.json`, so the missed rule is much easier to find here than `provider_health` is in paylane.
-A fixture where the trap is visible from the file the prompt names measures less than it looks like
-it does.
+**The demonstrated effect rests on `paylane`** (3/5 and 2/5 against 5/5 and 5/5), where the missing
+rule lives behind a pipeline the prompt never mentions — and on the 2026-09-04 baselines below, where
+the artifact was found and deliberately set aside in the plan-shaped scenarios. One model, small n.
 
-**The criterion that fired hardest is #4, the invariant.** It separated the arms on both scenarios,
-and the baseline failure was verbatim the rationalization the skill lists: *«рефакторить в общий
-хелпер за рамками задачи»* — refactoring into a shared helper is outside the scope of this task.
+**The criterion that discriminates anywhere is the single source.** Where an arm loses it, the
+reasoning is verbatim the rationalization the skill lists: *«не пытаться „заодно“ рефакторить в общий
+хелпер за рамками задачи»*, *«check.py — намеренно более узкий инструмент»*, *«фиксируется отдельно,
+не в этой задаче»*. That is the behaviour worth measuring, and it needs a fixture built to force it.
 
 ## Honest reservations
 
-1. **A pre-registered criterion turned out to be unsound, and it is the one that would have been the
-   headline.** Criterion 5 for scenario C originally also required naming "leave
-   `pipeline/install.py` alone" as an error in the plan. It scored **0/6 — in both arms**. The reason
-   is not that the skill failed: on `deplock` that constraint is legitimate, and five of six runs
-   satisfied it correctly by importing `resolve()` instead of editing the file. The criterion had one
-   expected answer baked into it. It has been split; the surviving half (was the inherited plan
-   rebuilt rather than executed) is what the table above reports, and there the split is base 2/3
-   against skill 3/3.
-2. **Scenario C on `deplock` shows no clear separation** (4, 2, 4 against 4, 4, 3). One baseline run
-   scored 2/5 and the rest are within noise of each other. C separates cleanly on paylane and not
-   here; a single fixture cannot tell you which of the two is the outlier.
-3. **Three reps per cell, one model, two fixtures.** Enough to say the behaviour changes and to see
-   variance shrink. Not enough to state an effect size, and not a significance test.
-4. **The 2026-09-04 runs measured a different file.** The earlier six runs (below) were made against
-   the Russian text that has since been rewritten in English and materially changed. They are kept as
-   the record of why the skill exists, not as evidence about the current text; the paylane rows above
-   are the re-measurement.
-5. **Never exercised:** step 5 (the second pass over your own fix) and the reversible-probe half of
-   step 2 — the answer form stops before code, and both fixtures are read-only in practice. Nobody in
-   12 runs noticed the `platform` field in the lockfile that no consumer reads.
+1. **Grader variance dominated the first `deplock` numbers, and they were published before this was
+   caught.** The first pass used one grader per scenario and reported A-base 4, 4, 5 against A-skill
+   5, 5, 5. Re-graded on one scale the same nine answers come out 5, 5, 6 against 5, 5, 5 — the
+   opposite direction. The cause was criterion 4: "one source is proposed for all of them" did not say
+   whether covering a subset of consumers counts, and the two graders read it differently, producing a
+   3/3 against 0/3 swing on equivalent answers. It is now split into "named" and "one source for
+   **every** consumer". Any comparison across differently-graded batches in this file is worthless;
+   only within-table comparisons hold.
+2. **Two more pre-registered criteria turned out to be unsound**, both by baking in an expected
+   answer. Criterion 5 for scenario C also demanded that "leave `pipeline/install.py` alone" be called
+   an error in the plan: it scored 0/6 in both arms, because on `deplock` that constraint is legitimate
+   and five of six runs satisfied it correctly by importing `resolve()` instead of editing the file.
+   The stretch criterion asked whether anyone noticed that the lockfile's `platform` field "is read by
+   no consumer" — but in the shipped fixture *no consumer reads any lockfile field*, so it is trivially
+   true of every field. Both are restated in `README.md`. Three of six criteria needed correction: the
+   grading harness was the weakest part of this exercise, not the runs.
+3. **A rule was added to the skill and then reverted, because the measurement did not support it.**
+   After the stretch criterion was restated ("does the design check the conditions recorded in the
+   artifact before trusting it"), a clause was added to step 1 telling the reader to name the
+   conditions the artifact was computed under. Re-tested on three fresh runs it scored 1/3, against
+   2/3 for the same scenario *without* the clause. No demonstrated failure to fix, and no measured
+   benefit — so it came out again. The episode is kept here because it is the more useful result.
+4. **Three reps per cell, one model, two fixtures.** Enough to see that behaviours appear and that
+   grader wording moves numbers more than the arms do. Not an effect size, not a significance test.
+5. **The 2026-09-04 runs measured a different file** — the Russian text since rewritten in English and
+   materially changed. They are provenance, not evidence about the current text; the `paylane` rows
+   above are the re-measurement.
+6. **Never exercised:** step 5 (the second pass over your own fix) and the reversible-probe half of
+   step 2 — the answer form stops before code and both fixtures are read-only in practice.
 
 ## 2026-09-04 — the original Russian text, `paylane` only
 

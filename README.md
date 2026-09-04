@@ -9,7 +9,7 @@ trust it.
   <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-1b2a41?style=flat-square"></a>
   <img alt="no tooling" src="https://img.shields.io/badge/requires-nothing-1b2a41?style=flat-square">
   <img alt="agent skill" src="https://img.shields.io/badge/agent-skill-e5674f?style=flat-square">
-  <img alt="tested on two fixtures" src="https://img.shields.io/badge/tested-2%20fixtures%20%C2%B7%2016%20runs-1b2a41?style=flat-square">
+  <img alt="tested on two fixtures, 19 runs" src="https://img.shields.io/badge/tested-2%20fixtures%20%C2%B7%2019%20runs-1b2a41?style=flat-square">
   <a href="docs/ru/SKILL.md"><img alt="Русская версия" src="https://img.shields.io/badge/docs-%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-5c6b7c?style=flat-square"></a>
 </p>
 
@@ -33,6 +33,11 @@ of a design that is already settled, and it is what the skill is built to interr
 
 ## What it asks for
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/flow-dark.svg">
+  <img alt="the full pipeline writes an artifact → measure it on the worst real inputs → adopt with a staleness rule, or reject and inherit its rules → one source read by every consumer" src="docs/assets/flow-light.svg" width="100%">
+</picture>
+
 Five steps, four of them before any code: inventory what the system already computed (**and who
 writes it, and when**), measure the worst real inputs and show the output, state the invariant and
 then try to falsify it, enumerate the state space, and — after the fix — pass over your own work
@@ -46,18 +51,23 @@ the missed rule hides. The answer is usually a hybrid.
 ## Does it work
 
 Measured, not asserted: [tests/results.md](tests/results.md). Two fixtures in unrelated domains,
-16 baseline-vs-skill runs, blinded grading against criteria registered before the runs.
+19 baseline-vs-skill runs, blinded grading against criteria registered before the runs.
 
 | | baseline | with the skill |
 |---|---|---|
 | `paylane` — payment methods, dictated fix / inherited plan | 3/5, 2/5 | **5/5, 5/5** |
-| `deplock` — dependency resolution, dictated fix (3 reps) | 4, 4, 5 | **5, 5, 5** |
-| `deplock` — inherited plan (3 reps) | 4, 2, 4 | 4, 4, 3 |
+| `deplock` — dependency resolution, dictated fix (3 reps) | 5, 5, 6 | 5, 5, 5 |
+| `deplock` — inherited plan (3 reps) | 6, 5, 5 | 6, 5, 6 |
 
-The honest reading: the clearest effect is **convergence** — the skill arm has no weak runs, the
-baseline arm does. On `deplock`'s inherited-plan scenario there is no clear separation, one
-pre-registered criterion turned out to be unsound and was split, and steps that happen after the code
-were never exercised. All of that is written up in the results, including what it means.
+**Read the second and third rows as a null result.** On `deplock` the arms are indistinguishable —
+five of the six criteria score 3/3 in every arm. The behaviours the skill asks for do appear in that
+second domain, but its baseline already produces them: the trap sits in plain sight in the file the
+prompt names, and all 15 runs found it. The demonstrated effect rests on `paylane`, where the missing
+rule hides behind a pipeline the prompt never mentions.
+
+Three of the six pre-registered criteria had to be corrected, one only after the first numbers were
+published — grader wording moved the results more than the arms did. A rule added to the skill during
+this work was reverted when the re-test did not support it. The results file has all of it.
 
 ## Install
 

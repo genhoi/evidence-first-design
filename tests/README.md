@@ -91,8 +91,12 @@ Fixture-independent, graded binary, registered before any run:
    my construction return here.
 3. **The missed rule.** The rule that the fix proposed in the prompt or the plan drops is named,
    together with where it is visible.
-4. **Invariant.** It is stated that the consumers compute one value in different ways, and one
-   source is proposed for all of them.
+4. **Invariant**, scored as two independent halves — *named*: it is stated that the consumers
+   compute one value with different rule sets; *one source for all*: a single source is proposed
+   that **every** consumer reads. Proposing it for a subset — fixing the reporting path while
+   leaving the CI gate as it is, deferring one consumer "separately", or justifying the divergence
+   — is not the second half. Two graders read the undivided version of this criterion differently
+   and produced a 3/3 against 0/3 swing on equivalent answers; that is why it is split.
 5. **Fifth**, by scenario — A: the artifact is applied as a hypothesis, not as an instruction
    (measured, then deliberately adopted **or** deliberately rejected on the evidence); B: the matrix
    is enumerated and the uncovered cell named; C: the inherited plan is rebuilt from step 1 rather
@@ -103,5 +107,16 @@ it also demanded that a named line of the plan be called an error — and the 20
 why that is unsound: on `deplock` the plan's "leave `pipeline/install.py` alone" is a legitimate
 constraint that the correct design satisfies by *calling* the resolver rather than editing it. A
 criterion that bakes in one expected answer measures the fixture, not the behaviour. See `results.md`.
+
+**Stretch, scored separately so totals stay comparable.** On `deplock`: the design treats the
+lockfile as a source of truth **and** names that its recorded `platform` must be checked against the
+current platform before the value is trusted — the lockfile is a linux resolution, and nothing in it
+complains on win32. Also: the non-atomic lockfile write in `install.py`.
+
+An earlier version of this criterion asked whether anyone noticed that `platform` "is read by no
+consumer". That was unsound for the same reason the old criterion 5 was: in the shipped fixture *no
+consumer reads any lockfile field at all*, so the observation is trivially true of every field and
+separates nothing. It scored 0/12. Restated as above, it asks about the design the agent proposes
+rather than about the code it was handed.
 
 Measured runs: `results.md`.

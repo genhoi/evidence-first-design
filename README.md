@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/hero.png" alt="A machine has already printed the answer; one figure measures it with calipers, another examines it with a magnifying glass, while a third redraws the same rows by hand" width="100%">
+</p>
+
 # evidence-first-design
 
 **A design you reasoned out is a hypothesis. What the running system already computed is evidence.**
